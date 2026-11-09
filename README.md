@@ -5,6 +5,19 @@ bisa di-Run: Player (CharacterBody3D) di atas tanah, gerak WASD, lompat Spasi,
 kamera third-person orbit dengan mouse (SpringArm3D). Dibuat untuk dibuka di
 editor Godot Android (HP) maupun Godot PC.
 
+## Fitur
+
+- **Koin (5x):** Area3D emas berputar. Sentuh Player -> hilang, skor +1 di HUD.
+  Ambil semua 5 koin -> pesan "Semua koin didapat!". 2 koin ada di atas platform,
+  jadi harus lompat.
+- **Platform & rintangan:** 2 platform (hijau) yang bisa dinaiki buat ambil koin,
+  1 dinding rintangan rendah (cokelat) di tengah yang bisa dilompati.
+- **Musuh:** 1 kotak merah patroli bolak-balik (x -6 sampai 6, z = 6).
+  Sentuh musuh -> Player respawn di awal (0, 1, 0), pesan "Kena musuh!".
+- **Joystick virtual (HP):** lingkaran di kiri bawah — seret buat gerak
+  (atas = maju). Tombol **LOMPAT** di kanan bawah buat lompat.
+  Di PC juga bisa drag joystick pakai mouse (setelah Esc buat lepas mouse).
+
 ## Yang dibutuhkan
 
 - **Godot 4.4+** — renderer disetel `gl_compatibility`, jadi jalan di HP
@@ -26,17 +39,18 @@ editor Godot Android (HP) maupun Godot PC.
 | File | Isi |
 | --- | --- |
 | `project.godot` | Konfigurasi: main scene, input map, renderer GL Compatibility |
-| `scenes/main.tscn` | Scene utama: langit, cahaya, Ground, Player + SpringArm3D/Camera3D, HUD |
+| `scenes/main.tscn` | Scene utama: langit, cahaya, Ground, Platform, Obstacle, 5 Coin, Enemy, Player + SpringArm3D/Camera3D, HUD |
 | `scripts/player.gd` | Gerak third-person + lompat + orbit kamera |
-| `scripts/main.gd` | Script scene utama + ide pengembangan |
+| `scripts/main.gd` | Skor koin, respawn, tombol LOMPAT |
+| `scripts/coin.gd` | Koin berputar + collect saat Player menyentuh |
+| `scripts/enemy.gd` | Musuh patroli bolak-balik + respawn Player saat sentuh |
+| `scripts/virtual_joystick.gd` | Joystick sentuh -> Input action move_* |
 | `icon.svg` | Ikon project |
 
 ## Pengembangan selanjutnya
 
-- Rintangan / platform + koin (Area2D) + skor di HUD
-- Musuh sederhana yang bergerak bolak-balik
-- Joystick virtual untuk kontrol sentuh di HP
 - Export ke Android (butuh export template: Project — Export — Android)
+- Level 2 / koin lebih banyak / musuh lebih cepat
 
 ## Catatan workflow
 

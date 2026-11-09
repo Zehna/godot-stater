@@ -1,8 +1,8 @@
 extends CharacterBody3D
 
 ## Player third-person: gerak WASD relatif terhadap kamera, lompat Spasi,
-## kamera orbit via mouse (SpringArm3D). Di HP paling nyaman pakai keyboard
-## + mouse; sentuh saja belum ada joystick virtual di starter ini.
+## kamera orbit via mouse (SpringArm3D). Di HP: joystick virtual di kiri
+## bawah + tombol LOMPAT di kanan bawah (lihat virtual_joystick.gd, main.gd).
 
 @export var speed: float = 6.0
 @export var jump_velocity: float = 8.0

@@ -1,7 +1,10 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=24 format=3]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/coin.gd" id="3"]
+[ext_resource type="Script" path="res://scripts/enemy.gd" id="4"]
+[ext_resource type="Script" path="res://scripts/virtual_joystick.gd" id="5"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
 sky_top_color = Color(0.35, 0.6, 0.9, 1)
@@ -17,19 +20,60 @@ background_mode = 2
 sky = SubResource("Sky_1")
 tonemap_mode = 2
 
-[sub_resource type="BoxMesh" id="BoxMesh_1"]
+[sub_resource type="BoxMesh" id="BoxMesh_Ground"]
 size = Vector3(20, 1, 20)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_1"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_Ground"]
 size = Vector3(20, 1, 20)
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_1"]
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_Player"]
 radius = 0.4
 height = 1.8
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_Player"]
 radius = 0.4
 height = 1.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_Platform"]
+albedo_color = Color(0.3, 0.6, 0.35, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_Platform"]
+material = SubResource("StandardMaterial3D_Platform")
+size = Vector3(4, 1, 4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_Platform"]
+size = Vector3(4, 1, 4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_Obstacle"]
+albedo_color = Color(0.7, 0.3, 0.2, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_Obstacle"]
+material = SubResource("StandardMaterial3D_Obstacle")
+size = Vector3(4, 1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_Obstacle"]
+size = Vector3(4, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_Gold"]
+albedo_color = Color(1, 0.84, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_Coin"]
+material = SubResource("StandardMaterial3D_Gold")
+radius = 0.35
+height = 0.7
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_Coin"]
+radius = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_Enemy"]
+albedo_color = Color(0.9, 0.2, 0.2, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_Enemy"]
+material = SubResource("StandardMaterial3D_Enemy")
+size = Vector3(1, 1.5, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_Enemy"]
+size = Vector3(1, 1.5, 1)
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1")
@@ -46,20 +90,110 @@ shadow_enabled = true
 position = Vector3(0, -0.5, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
-mesh = SubResource("BoxMesh_1")
+mesh = SubResource("BoxMesh_Ground")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
-shape = SubResource("BoxShape3D_1")
+shape = SubResource("BoxShape3D_Ground")
+
+[node name="Platform1" type="StaticBody3D" parent="."]
+position = Vector3(-5, 0.5, -6)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Platform1"]
+mesh = SubResource("BoxMesh_Platform")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Platform1"]
+shape = SubResource("BoxShape3D_Platform")
+
+[node name="Platform2" type="StaticBody3D" parent="."]
+position = Vector3(5, 1, -6)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Platform2"]
+mesh = SubResource("BoxMesh_Platform")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Platform2"]
+shape = SubResource("BoxShape3D_Platform")
+
+[node name="Obstacle" type="StaticBody3D" parent="."]
+position = Vector3(0, 0.5, 3)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Obstacle"]
+mesh = SubResource("BoxMesh_Obstacle")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Obstacle"]
+shape = SubResource("BoxShape3D_Obstacle")
+
+[node name="Coin1" type="Area3D" parent="."]
+position = Vector3(0, 1, -3)
+script = ExtResource("3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Coin1"]
+mesh = SubResource("SphereMesh_Coin")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Coin1"]
+shape = SubResource("SphereShape3D_Coin")
+
+[node name="Coin2" type="Area3D" parent="."]
+position = Vector3(-5, 2, -6)
+script = ExtResource("3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Coin2"]
+mesh = SubResource("SphereMesh_Coin")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Coin2"]
+shape = SubResource("SphereShape3D_Coin")
+
+[node name="Coin3" type="Area3D" parent="."]
+position = Vector3(5, 2.5, -6)
+script = ExtResource("3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Coin3"]
+mesh = SubResource("SphereMesh_Coin")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Coin3"]
+shape = SubResource("SphereShape3D_Coin")
+
+[node name="Coin4" type="Area3D" parent="."]
+position = Vector3(3, 1, 4)
+script = ExtResource("3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Coin4"]
+mesh = SubResource("SphereMesh_Coin")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Coin4"]
+shape = SubResource("SphereShape3D_Coin")
+
+[node name="Coin5" type="Area3D" parent="."]
+position = Vector3(-3, 1, 5)
+script = ExtResource("3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Coin5"]
+mesh = SubResource("SphereMesh_Coin")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Coin5"]
+shape = SubResource("SphereShape3D_Coin")
+
+[node name="Enemy" type="CharacterBody3D" parent="."]
+position = Vector3(0, 1, 6)
+script = ExtResource("4")
+patrol_min_x = -6.0
+patrol_max_x = 6.0
+speed = 2.5
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Enemy"]
+mesh = SubResource("BoxMesh_Enemy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Enemy"]
+shape = SubResource("BoxShape3D_Enemy")
 
 [node name="Player" type="CharacterBody3D" parent="."]
 position = Vector3(0, 1, 0)
 script = ExtResource("2")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
-mesh = SubResource("CapsuleMesh_1")
+mesh = SubResource("CapsuleMesh_Player")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
-shape = SubResource("CapsuleShape3D_1")
+shape = SubResource("CapsuleShape3D_Player")
 
 [node name="SpringArm3D" type="SpringArm3D" parent="Player"]
 position = Vector3(0, 1.6, 0)
@@ -75,7 +209,44 @@ fov = 70.0
 [node name="Label" type="Label" parent="HUD"]
 offset_left = 16.0
 offset_top = 16.0
-offset_right = 760.0
+offset_right = 900.0
 offset_bottom = 48.0
 theme_override_font_sizes/font_size = 24
-text = "WASD: gerak | Spasi: lompat | Mouse: putar kamera (Esc: lepas mouse)"
+text = "WASD: gerak | Spasi: lompat | Mouse: putar kamera (Esc: lepas mouse) | Sentuh: joystick + LOMPAT"
+
+[node name="ScoreLabel" type="Label" parent="HUD"]
+offset_left = 16.0
+offset_top = 48.0
+offset_right = 300.0
+offset_bottom = 80.0
+theme_override_font_sizes/font_size = 24
+text = "Koin: 0/5"
+
+[node name="StatusLabel" type="Label" parent="HUD"]
+offset_left = 16.0
+offset_top = 80.0
+offset_right = 600.0
+offset_bottom = 112.0
+theme_override_font_sizes/font_size = 24
+text = ""
+
+[node name="Joystick" type="Control" parent="HUD"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = -240.0
+offset_right = 240.0
+offset_bottom = -40.0
+script = ExtResource("5")
+
+[node name="JumpButton" type="Button" parent="HUD"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -180.0
+offset_top = -180.0
+offset_right = -40.0
+offset_bottom = -40.0
+theme_override_font_sizes/font_size = 24
+text = "LOMPAT"
